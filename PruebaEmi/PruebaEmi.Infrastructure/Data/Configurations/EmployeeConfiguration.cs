@@ -22,8 +22,8 @@ namespace PruebaEmi.Infrastructure.Data.Configurations
                 .HasMaxLength(200);
 
             builder.Property(e => e.CurrentPosition)
-                .IsRequired();
-
+                .IsRequired(false); 
+                    
             builder.Property(e => e.Salary)
                 .IsRequired()
                 .HasColumnType("decimal(18,2)");

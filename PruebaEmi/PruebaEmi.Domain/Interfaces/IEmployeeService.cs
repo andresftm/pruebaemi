@@ -10,6 +10,7 @@ namespace PruebaEmi.Domain.Interfaces
     public interface IEmployeeService : IService<employee>
     {
         Task<List<employee>> GetEmployeesByDepartmentWithProjectsAsync(int departmentId);
+        Task<decimal> CalculateYearlyBonusAsync(int employeeId); // ⬅️ Agregar este método
     }
 
 }

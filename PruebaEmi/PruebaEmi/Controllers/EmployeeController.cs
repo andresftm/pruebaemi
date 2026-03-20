@@ -1,3 +1,4 @@
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using PruebaEmi.Domain.Entities;
 using PruebaEmi.Domain.Interfaces;
@@ -6,6 +7,7 @@ namespace PruebaEmi.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
+    [Authorize] // ⚠️ Requiere autenticación para todos los endpoints
     public class EmployeeController : ControllerBase
     {
         private readonly IEmployeeService _employeeService;
@@ -16,7 +18,9 @@ namespace PruebaEmi.Controllers
         }
 
         // GET: api/Employee
+        // Ambos roles pueden acceder (Admin y User)
         [HttpGet]
+        [Authorize(Roles = "Admin,User")]
         public async Task<ActionResult<IEnumerable<employee>>> GetAllEmployees()
         {
             try
@@ -31,7 +35,9 @@ namespace PruebaEmi.Controllers
         }
 
         // GET: api/Employee/5
+        // Ambos roles pueden acceder (Admin y User)
         [HttpGet("{id}")]
+        [Authorize(Roles = "Admin,User")]
         public async Task<ActionResult<employee>> GetEmployeeById(int id)
         {
             try
@@ -52,7 +58,9 @@ namespace PruebaEmi.Controllers
         }
 
         // GET: api/Employee/department/{departmentId}/with-projects
+        // Ambos roles pueden acceder (Admin y User)
         [HttpGet("department/{departmentId}/with-projects")]
+        [Authorize(Roles = "Admin,User")]
         public async Task<ActionResult<List<employee>>> GetEmployeesByDepartmentWithProjects(int departmentId)
         {
             try
@@ -73,7 +81,9 @@ namespace PruebaEmi.Controllers
         }
 
         // POST: api/Employee
+        // Solo Admin puede crear
         [HttpPost]
+        [Authorize(Roles = "Admin")]
         public async Task<ActionResult<employee>> CreateEmployee([FromBody] employee employee)
         {
             try
@@ -97,7 +107,9 @@ namespace PruebaEmi.Controllers
         }
 
         // PUT: api/Employee/5
+        // Solo Admin puede actualizar
         [HttpPut("{id}")]
+        [Authorize(Roles = "Admin")]
         public async Task<IActionResult> UpdateEmployee(int id, [FromBody] employee employee)
         {
             try
@@ -132,7 +144,9 @@ namespace PruebaEmi.Controllers
         }
 
         // DELETE: api/Employee/5
+        // Solo Admin puede eliminar
         [HttpDelete("{id}")]
+        [Authorize(Roles = "Admin")]
         public async Task<IActionResult> DeleteEmployee(int id)
         {
             try
@@ -150,6 +164,37 @@ namespace PruebaEmi.Controllers
             catch (KeyNotFoundException ex)
             {
                 return NotFound(ex.Message);
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, $"Error interno del servidor: {ex.Message}");
+            }
+        }
+
+        // GET: api/Employee/5/bonus
+        // Ambos roles pueden acceder (Admin)
+        [HttpGet("{id}/bonus")]
+        [Authorize(Roles = "Admin")]
+        public async Task<ActionResult<object>> GetEmployeeBonus(int id)
+        {
+            try
+            {
+                var bonus = await _employeeService.CalculateYearlyBonusAsync(id);
+                
+                return Ok(new 
+                { 
+                    employeeId = id,
+                    yearlyBonus = bonus,
+                    formattedBonus = $"${bonus:N2}"
+                });
+            }
+            catch (KeyNotFoundException ex)
+            {
+                return NotFound(ex.Message);
+            }
+            catch (InvalidOperationException ex)
+            {
+                return BadRequest(ex.Message);
             }
             catch (Exception ex)
             {

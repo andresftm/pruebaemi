@@ -15,8 +15,8 @@ namespace PruebaEmi.Infrastructure.Data
         public DbSet<departments> Departments { get; set; }
         public DbSet<projects> Projects { get; set; }
         public DbSet<PositionHistory> PositionHistories { get; set; }
-
         public DbSet<EmployeeProject> EmployeeProjects { get; set; } 
+        public DbSet<User> Users { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
@@ -26,7 +26,8 @@ namespace PruebaEmi.Infrastructure.Data
             modelBuilder.ApplyConfiguration(new DepartmentConfiguration());
             modelBuilder.ApplyConfiguration(new ProjectConfiguration());
             modelBuilder.ApplyConfiguration(new PositionHistoryConfiguration());
-            modelBuilder.ApplyConfiguration(new EmployeeProjectConfiguration()); 
+            modelBuilder.ApplyConfiguration(new EmployeeProjectConfiguration());
+            modelBuilder.ApplyConfiguration(new UserConfiguration());
         }
     }
 }

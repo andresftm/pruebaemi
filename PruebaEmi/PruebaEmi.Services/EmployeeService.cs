@@ -18,9 +18,21 @@ namespace PruebaEmi.Services
             return await _employeeRepository.GetEmployeesByDepartmentWithProjectsAsync(departmentId);
         }
 
+        public async Task<decimal> CalculateYearlyBonusAsync(int employeeId)
+        {
+            var employee = await _employeeRepository.GetByIdAsync(employeeId);
+            
+            if (employee == null)
+                throw new KeyNotFoundException($"Empleado con ID {employeeId} no encontrado");
+
+            if (employee.Salary <= 0)
+                throw new InvalidOperationException("El empleado no tiene un salario válido para calcular el bono");
+
+            return employee.CalculateYearlyBonus();
+        }
+
         public override async Task<employee> AddAsync(employee entity)
         {
-            // Validaciones de negocio
             if (string.IsNullOrWhiteSpace(entity.Name))
                 throw new ArgumentException("El nombre del empleado es requerido");
 
@@ -30,7 +42,6 @@ namespace PruebaEmi.Services
             return await _repository.AddAsync(entity);
         }
 
-        // Lo Sobrescribo por si hay validaciones por hacer antes de editar un empleado
         public override async Task UpdateAsync(employee entity)
         {
             if (entity.Salary < 0)
@@ -39,7 +50,6 @@ namespace PruebaEmi.Services
             await _repository.UpdateAsync(entity);
         }
 
-        // Lo Sobrescribo por si hay validaciones por hacer antes de eliminar un empleado
         public override async Task DeleteAsync(employee entity)
         {
             if (entity == null)

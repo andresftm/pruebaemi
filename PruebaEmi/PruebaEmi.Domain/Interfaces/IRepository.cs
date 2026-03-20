@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Linq.Expressions;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -11,6 +12,7 @@ namespace PruebaEmi.Domain.Interfaces
         // Métodos que necesitarían por cada controladorer
         Task<T?> GetByIdAsync(int id);           // Obtener por ID
         Task<IEnumerable<T>> GetAllAsync();      // Obtener todos
+        Task<IEnumerable<T>> FindAsync(Expression<Func<T, bool>> predicate); 
         Task<T> AddAsync(T entity);              // Agregar
         Task UpdateAsync(T entity);              // Actualizar
         Task DeleteAsync(T entity);              // Eliminar
