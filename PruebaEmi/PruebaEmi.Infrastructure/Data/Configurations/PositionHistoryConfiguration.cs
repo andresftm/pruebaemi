@@ -10,7 +10,10 @@ namespace PruebaEmi.Infrastructure.Data.Configurations
         {
             builder.ToTable("PositionHistories");
 
-            builder.HasKey(ph => new { ph.EmployeeId, ph.StartDate });
+            builder.HasKey(ph => ph.id);
+
+            builder.Property(ph => ph.id)
+                .ValueGeneratedOnAdd();
 
             builder.Property(ph => ph.EmployeeId)
                 .IsRequired();
@@ -24,10 +27,12 @@ namespace PruebaEmi.Infrastructure.Data.Configurations
 
             builder.Property(ph => ph.EndDate);
 
-            builder.HasOne<employee>()
-                .WithMany()
+            builder.HasOne(ph => ph.Employee)
+                .WithMany(e => e.PositionHistories)  // ← ESTE es el cambio importante
                 .HasForeignKey(ph => ph.EmployeeId)
-                .OnDelete(DeleteBehavior.Cascade);
+                .OnDelete(DeleteBehavior.Restrict);
+
+            builder.HasIndex(ph => ph.EmployeeId);
         }
     }
 }
