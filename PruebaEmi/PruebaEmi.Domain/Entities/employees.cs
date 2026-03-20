@@ -16,8 +16,12 @@ namespace PruebaEmi.Domain.Entities
 
         public decimal Salary { get; set; }
 
+        public int DepartmentId { get; set; }
+
+        public departments Departments { get; set; }
+
         public List<PositionHistory> PositionHistories { get; set; }
 
-
+        public List<EmployeeProject> EmployeeProjects { get; set; }
     }
 }

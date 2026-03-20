@@ -12,5 +12,7 @@ namespace PruebaEmi.Domain.Entities
         public int id { get; set; }
 
         public string name { get; set; }
+
+        public List<employee> Employees { get; set; }
     }
 }

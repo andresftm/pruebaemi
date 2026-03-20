@@ -18,6 +18,12 @@ namespace PruebaEmi.Infrastructure.Data.Configurations
             builder.Property(d => d.name)
                 .IsRequired()
                 .HasMaxLength(200);
+
+            // Configuración de la relación inversa (opcional, ya está en Employee)
+            builder.HasMany(d => d.Employees)
+                .WithOne(e => e.Departments)
+                .HasForeignKey("DepartmentId")
+                .OnDelete(DeleteBehavior.Restrict);
         }
     }
 }

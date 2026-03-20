@@ -12,7 +12,7 @@ using PruebaEmi.Infrastructure.Data;
 namespace PruebaEmi.Infrastructure.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20260320053210_InitialCreate")]
+    [Migration("20260320071607_InitialCreate")]
     partial class InitialCreate
     {
         /// <inheritdoc />
@@ -24,6 +24,30 @@ namespace PruebaEmi.Infrastructure.Migrations
                 .HasAnnotation("Relational:MaxIdentifierLength", 128);
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
+
+            modelBuilder.Entity("PruebaEmi.Domain.Entities.EmployeeProject", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<int>("EmployeeId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("ProjectId")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("ProjectId");
+
+                    b.HasIndex("EmployeeId", "ProjectId")
+                        .IsUnique();
+
+                    b.ToTable("EmployeeProjects", (string)null);
+                });
 
             modelBuilder.Entity("PruebaEmi.Domain.Entities.PositionHistory", b =>
                 {
@@ -83,6 +107,9 @@ namespace PruebaEmi.Infrastructure.Migrations
                     b.Property<int>("CurrentPosition")
                         .HasColumnType("int");
 
+                    b.Property<int>("DepartmentId")
+                        .HasColumnType("int");
+
                     b.Property<string>("Name")
                         .IsRequired()
                         .HasMaxLength(200)
@@ -92,6 +119,8 @@ namespace PruebaEmi.Infrastructure.Migrations
                         .HasColumnType("decimal(18,2)");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("DepartmentId");
 
                     b.ToTable("Employees", (string)null);
                 });
@@ -114,6 +143,25 @@ namespace PruebaEmi.Infrastructure.Migrations
                     b.ToTable("Projects", (string)null);
                 });
 
+            modelBuilder.Entity("PruebaEmi.Domain.Entities.EmployeeProject", b =>
+                {
+                    b.HasOne("PruebaEmi.Domain.Entities.employee", "Employee")
+                        .WithMany("EmployeeProjects")
+                        .HasForeignKey("EmployeeId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("PruebaEmi.Domain.Entities.projects", "Project")
+                        .WithMany("EmployeeProjects")
+                        .HasForeignKey("ProjectId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Employee");
+
+                    b.Navigation("Project");
+                });
+
             modelBuilder.Entity("PruebaEmi.Domain.Entities.PositionHistory", b =>
                 {
                     b.HasOne("PruebaEmi.Domain.Entities.employee", "Employee")
@@ -127,7 +175,30 @@ namespace PruebaEmi.Infrastructure.Migrations
 
             modelBuilder.Entity("PruebaEmi.Domain.Entities.employee", b =>
                 {
+                    b.HasOne("PruebaEmi.Domain.Entities.departments", "Departments")
+                        .WithMany("Employees")
+                        .HasForeignKey("DepartmentId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.Navigation("Departments");
+                });
+
+            modelBuilder.Entity("PruebaEmi.Domain.Entities.departments", b =>
+                {
+                    b.Navigation("Employees");
+                });
+
+            modelBuilder.Entity("PruebaEmi.Domain.Entities.employee", b =>
+                {
+                    b.Navigation("EmployeeProjects");
+
                     b.Navigation("PositionHistories");
+                });
+
+            modelBuilder.Entity("PruebaEmi.Domain.Entities.projects", b =>
+                {
+                    b.Navigation("EmployeeProjects");
                 });
 #pragma warning restore 612, 618
         }
