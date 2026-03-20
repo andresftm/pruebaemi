@@ -7,8 +7,9 @@ using System.Threading.Tasks;
 
 namespace PruebaEmi.Domain.Interfaces
 {
-    public interface IEmployeeRepository : IRepository<employee>
+    public interface IEmployeeService : IService<employee>
     {
         Task<List<employee>> GetEmployeesByDepartmentWithProjectsAsync(int departmentId);
     }
+
 }

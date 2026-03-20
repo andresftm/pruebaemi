@@ -18,6 +18,8 @@ namespace PruebaEmi.Infrastructure.Repositories
             _context = context;
         }
 
+
+
         public async Task<List<employee>> GetEmployeesByDepartmentWithProjectsAsync(int departmentId)
         {
             return await _context.Employees
@@ -27,5 +29,7 @@ namespace PruebaEmi.Infrastructure.Repositories
                     .ThenInclude(ep => ep.Project)
                 .ToListAsync();
         }
+
+
     }
 }
