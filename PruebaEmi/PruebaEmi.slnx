@@ -1,4 +1,7 @@
 <Solution>
+  <Folder Name="/Solution Items/">
+    <File Path="README.md" />
+  </Folder>
   <Project Path="PruebaEmi.Domain/PruebaEmi.Domain.csproj" Id="6f3165a7-3901-4ab9-8a10-2a3cca61296f" />
   <Project Path="PruebaEmi.Infrastructure/PruebaEmi.Infrastructure.csproj" Id="423a04fc-8ad7-4fa3-b62a-a9a5863b07cf" />
   <Project Path="PruebaEmi.Services/PruebaEmi.Services.csproj" Id="f216dbac-72f1-48bc-af96-a70e3a9dab14" />

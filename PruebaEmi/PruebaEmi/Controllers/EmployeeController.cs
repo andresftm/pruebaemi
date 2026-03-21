@@ -5,6 +5,9 @@ using PruebaEmi.Domain.Interfaces;
 
 namespace PruebaEmi.Controllers
 {
+    /// <summary>
+    /// Controlador para gestionar empleados. Proporciona endpoints para CRUD de empleados,
+    /// </summary>
     [Route("api/[controller]")]
     [ApiController]
     [Authorize] // ⚠️ Requiere autenticación para todos los endpoints
@@ -17,8 +20,11 @@ namespace PruebaEmi.Controllers
             _employeeService = employeeService;
         }
 
+        /// <summary>
+        /// Método para obtener todos los empleados. Accesible por roles Admin y User.
+        /// </summary>
+        /// <returns></returns>
         // GET: api/Employee
-        // Ambos roles pueden acceder (Admin y User)
         [HttpGet]
         [Authorize(Roles = "Admin,User")]
         public async Task<ActionResult<IEnumerable<employee>>> GetAllEmployees()
@@ -34,6 +40,11 @@ namespace PruebaEmi.Controllers
             }
         }
 
+        /// <summary>
+        /// Método para obtener un empleado por su ID. Accesible por roles Admin y User.
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
         // GET: api/Employee/5
         // Ambos roles pueden acceder (Admin y User)
         [HttpGet("{id}")]
@@ -57,6 +68,11 @@ namespace PruebaEmi.Controllers
             }
         }
 
+        /// <summary>
+        /// Método para obtener empleados de un departamento específico junto con sus proyectos. Accesible por roles Admin y User.
+        /// </summary>
+        /// <param name="departmentId"></param>
+        /// <returns></returns>
         // GET: api/Employee/department/{departmentId}/with-projects
         // Ambos roles pueden acceder (Admin y User)
         [HttpGet("department/{departmentId}/with-projects")]
@@ -80,6 +96,11 @@ namespace PruebaEmi.Controllers
             }
         }
 
+        /// <summary>
+        /// Método para crear un nuevo empleado. Solo accesible por el rol Admin.
+        /// </summary>
+        /// <param name="employee"></param>
+        /// <returns></returns>
         // POST: api/Employee
         // Solo Admin puede crear
         [HttpPost]
@@ -106,6 +127,12 @@ namespace PruebaEmi.Controllers
             }
         }
 
+        /// <summary>
+        /// Método para actualizar un empleado existente. Solo accesible por el rol Admin.
+        /// </summary>
+        /// <param name="id"></param>
+        /// <param name="employee"></param>
+        /// <returns></returns>
         // PUT: api/Employee/5
         // Solo Admin puede actualizar
         [HttpPut("{id}")]
@@ -143,6 +170,11 @@ namespace PruebaEmi.Controllers
             }
         }
 
+        /// <summary>
+        /// Método para eliminar un empleado. Solo accesible por el rol Admin.
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
         // DELETE: api/Employee/5
         // Solo Admin puede eliminar
         [HttpDelete("{id}")]
@@ -171,6 +203,11 @@ namespace PruebaEmi.Controllers
             }
         }
 
+        /// <summary>
+        /// Método para calcular el bono anual de un empleado. Solo accesible por el rol Admin.
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
         // GET: api/Employee/5/bonus
         // Ambos roles pueden acceder (Admin)
         [HttpGet("{id}/bonus")]

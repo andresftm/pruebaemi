@@ -7,6 +7,10 @@ using System.Threading.Tasks;
 
 namespace PruebaEmi.Services
 {
+    /// <summary>
+    /// Clase base para servicios que implementa las operaciones CRUD básicas utilizando un repositorio genérico.
+    /// </summary>
+    /// <typeparam name="T"></typeparam>
     public class Service<T> : IService<T> where T : class
     {
         protected readonly IRepository<T> _repository;

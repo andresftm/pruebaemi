@@ -2,6 +2,9 @@
 
 namespace PruebaEmi.Domain.DTOs
 {
+    /// <summary>
+    /// Clase que representa la solicitud de registro de un nuevo usuario. Contiene las propiedades necesarias para crear una cuenta, como el nombre de usuario, correo electrónico, contraseña y rol del usuario. Esta clase se utiliza para recibir los datos del cliente al momento de registrarse en la aplicación.
+    /// </summary>
     public class RegisterRequest
     {
         [Required]

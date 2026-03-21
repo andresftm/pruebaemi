@@ -6,6 +6,9 @@ using System.Threading.Tasks;
 
 namespace PruebaEmi.Domain.Entities
 {
+    /// <summary>
+    /// Clase que representa el historial de posiciones de un empleado, incluyendo su posición, fecha de inicio y fecha de fin (si aplica).
+    /// </summary>
     public class PositionHistory
     {
         public int id { get; set; }

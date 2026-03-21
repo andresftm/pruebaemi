@@ -7,6 +7,9 @@ using System.Threading.Tasks;
 
 namespace PruebaEmi.Domain.Entities
 {
+    /// <summary>
+    /// Clase que representa a un usuario en el sistema, con propiedades para almacenar su información básica, como nombre de usuario, correo electrónico, contraseña (almacenada como hash), rol y fecha de creación.
+    /// </summary>
     public class User
     {
         public int Id { get; set; }

@@ -21,6 +21,12 @@ namespace PruebaEmi.Services
             _configuration = configuration;
         }
 
+        /// <summary>
+        /// Método para autenticar a un usuario. Verifica el username y password, y si son correctos, genera un token JWT con la información del usuario (id, username, email, role) y lo devuelve junto con la fecha de expiración del token.
+        /// </summary>
+        /// <param name="request"> Un objeto que trae un usuario y la contrase de quien se quiere loquear.</param>
+        /// <returns> Un objeto con la información del logueo.</returns>
+        /// <exception cref="UnauthorizedAccessException"></exception>
         public async Task<AuthResponse> LoginAsync(LoginRequest request)
         {
             // Buscar usuario por username
@@ -48,6 +54,13 @@ namespace PruebaEmi.Services
             };
         }
 
+        /// <summary>
+        /// Método para registrar a un nuevo usuario. Verifica que el username y email no existan, valida el rol, hashea la contraseña, crea un nuevo usuario en la base de datos y genera un token JWT con la información del nuevo usuario (id, username, email, role) y lo devuelve junto con la fecha de expiración del token.
+        /// </summary>
+        /// <param name="request"> Datos del usuario a registrar  </param>
+        /// <returns></returns>
+        /// <exception cref="InvalidOperationException"></exception>
+        /// <exception cref="ArgumentException"></exception>
         public async Task<AuthResponse> RegisterAsync(RegisterRequest request)
         {
             // Verificar si el usuario ya existe
@@ -91,6 +104,11 @@ namespace PruebaEmi.Services
             };
         }
 
+        /// <summary>
+        /// Beneración del token JWT con la información del usuario (id, username, email, role) y la configuración de JWT (secret key, issuer, audience) para firmar el token y establecer su expiración en 24 horas.
+        /// </summary>
+        /// <param name="user"> Los datos del usuario para generar el toquen  </param>
+        /// <returns></returns>
         public string GenerateJwtToken(User user)
         {
             var jwtSettings = _configuration.GetSection("JwtSettings");

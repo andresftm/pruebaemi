@@ -10,6 +10,10 @@ using System.Threading.Tasks;
 
 namespace PruebaEmi.Infrastructure.Repositories
 {
+    /// <summary>
+    /// Clase genérica de repositorio que implementa las operaciones CRUD básicas para cualquier entidad.
+    /// </summary>
+    /// <typeparam name="T"></typeparam>
     public class Repository<T> : IRepository<T> where T : class
     {
         protected readonly ApplicationDbContext _context;

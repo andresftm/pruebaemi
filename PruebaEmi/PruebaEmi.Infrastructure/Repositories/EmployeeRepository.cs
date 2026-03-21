@@ -19,10 +19,12 @@ namespace PruebaEmi.Infrastructure.Repositories
             _context = context;
         }
 
-     
+        /// <summary>
+        /// Método para obtener un empleado por su ID, incluyendo sus departamentos, historial de posiciones y proyectos asignados. Se utiliza AsNoTracking para mejorar el rendimiento al no rastrear los cambios en la entidad.
+        /// </summary>
+        /// <returns></returns>
         public override async Task<employee?> GetByIdAsync(int id)
         {
-            // Detach cualquier entidad previamente rastreada
             var tracked = _context.ChangeTracker.Entries<employee>()
                 .FirstOrDefault(e => e.Entity.Id == id);
             if (tracked != null)
@@ -34,13 +36,17 @@ namespace PruebaEmi.Infrastructure.Repositories
                 .AsNoTracking()
                 .Where(e => e.Id == id)
                 .Include(e => e.Departments)
-                .Include(e => e.PositionHistories.Where(ph => ph.EmployeeId == id)) // ⬅️ Filtro explícito
+                .Include(e => e.PositionHistories.Where(ph => ph.EmployeeId == id))
                 .Include(e => e.EmployeeProjects)
                     .ThenInclude(ep => ep.Project)
-                .AsSplitQuery() // ⬅️ Queries separadas
+                .AsSplitQuery() 
                 .FirstOrDefaultAsync();
         }
 
+        /// <summary>
+        /// Método para obtener todos los empleados con sus departamentos, historial de posiciones y proyectos asignados. Se utiliza AsSplitQuery para optimizar la carga de datos relacionados.
+        /// </summary>
+        /// <returns></returns>
         public override async Task<IEnumerable<employee>> GetAllAsync()
         {
             return await _context.Employees
@@ -51,6 +57,11 @@ namespace PruebaEmi.Infrastructure.Repositories
                 .ToListAsync();
         }
 
+        /// <summary>
+        /// Metodo para obtener empleados por departamento, incluyendo solo aquellos que tienen proyectos asignados. Se utiliza AsSplitQuery para optimizar la carga de datos relacionados.
+        /// </summary>
+        /// <param name="departmentId"></param>
+        /// <returns></returns>
         public async Task<List<employee>> GetEmployeesByDepartmentWithProjectsAsync(int departmentId)
         {
             return await _context.Employees

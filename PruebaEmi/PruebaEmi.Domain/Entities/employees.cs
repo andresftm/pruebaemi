@@ -6,6 +6,9 @@ using System.Threading.Tasks;
 
 namespace PruebaEmi.Domain.Entities
 {
+    /// <summary>
+    /// Clase que representa a un empleado, con propiedades para su información personal, posición actual, salario y relaciones con departamentos, historial de posiciones y proyectos.
+    /// </summary>
     public class employee
     {
         // Constantes para posiciones
